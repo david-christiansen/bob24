@@ -10,6 +10,15 @@ def filter (p : α → Prop) [DecidablePred p] : List α → List α
   | [] => []
   | x :: xs => if p x then x :: filter p xs else filter p xs
 
+def filter_length (p : α → Prop) [DecidablePred p] : (filter p xs).length ≤ xs.length := by
+  induction xs with
+  | nil => simp [filter]
+  | cons x xs ih =>
+    simp [filter]
+    split
+    . simp; omega
+    . omega
+
 theorem filter_all (p : α → Prop) [DecidablePred p] : All p (filter p xs) := by
   induction xs with
   | nil => constructor
@@ -169,7 +178,6 @@ partial def Query.parse {ctxt: Context} (input : Json) : Except String (Query ct
     | #[⟨"at", n⟩, ⟨"satisfies", q'⟩] =>
       pure (.at (← FromJson.fromJson? n) (← parse q'))
     | _ => throw s!"expected object with single key 'length' or keys 'at' and 'satisfies', got {v}"
-  | .array, other => throw s!"expected object, got {other}"
   | ctxt, .arr more =>
     if h : more.size > 2 then
       match more[0]'(by omega) with
