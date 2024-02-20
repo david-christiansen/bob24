@@ -23,24 +23,26 @@ theorem filter_all (p : α → Prop) [DecidablePred p] : All p (filter p xs) := 
   induction xs with
   | nil => constructor
   | cons x xs ih =>
-    simp only [filter]
+    unfold filter
     split
-    . constructor
-      . assumption
-      . assumption
-    . assumption
+    next h =>
+      apply All.cons
+      . exact h
+      . exact ih
+    next =>
+      assumption
 
 theorem filter_elem (p : α → Prop) [DecidablePred p] : x ∈ xs → p x → x ∈ filter p xs := by
   intro hMem
   induction hMem with
   | head as =>
     intro hx
-    simp [filter]
+    unfold filter
     split <;> try trivial
     constructor
   | tail h _ ih =>
     intro hx
-    simp [filter]
+    unfold filter
     split
     . constructor; apply ih; assumption
     . apply ih; assumption
@@ -55,16 +57,25 @@ theorem filter_sublist [DecidablePred p] : Sublist (filter p xs) xs := by
   | nil =>
     constructor
   | cons head tail ih =>
-    simp [filter]
+    unfold filter
     split
     . apply Sublist.cons; exact ih
     . apply Sublist.skip; exact ih
+
+
 end Lists
 
 namespace Arrays
 
 def All (p : α → Prop) (arr : Array α) : Prop :=
   ∀ i, (lt : i < arr.size) → p arr[i]
+
+def filter1 (p : α → Prop) [DecidablePred p] (arr : Array α) : Array α := Id.run do
+  let mut out := #[]
+  for x in arr do
+    if p x then out := out.push x
+  pure out
+
 
 def filter (p : α → Prop) [DecidablePred p] (arr : Array α) : Array α :=
   let rec go (i : Nat) (acc : Array α) : Array α :=
@@ -90,7 +101,7 @@ theorem push_all (p : α → Prop) : All p xs → p x → All p (xs.push x) := b
     rw [this]
     assumption
   . have : i < xs.size := by
-      simp at isLt
+      simp only [Array.size_push] at isLt
       omega
     rename All p xs => hAll
     rw [Array.get_push]
