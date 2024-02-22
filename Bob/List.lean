@@ -3,18 +3,11 @@ import Lean
 
 namespace Bob.List
 
-/-- `All p xs` states that `p` holds for all entries in the list `xs` -/
-inductive All (p : α → Prop) : List α → Prop where
-  | /-- `p` certainly holds for all zero entries of the empty list -/
-    nil : All p []
-  | /-- If `p` holds for the head and holds for all entries in the tail,
-    then it holds for the combined list -/
-    cons : p x → All p xs → All p (x :: xs)
-
 -- `DecidablePred p` means that we can use `if` to see if `p` holds
-def filter (p : α → Prop) [DecidablePred p] : List α → List α
+def filter (p : α → Prop) [DecidablePred p] (xs : List α) : List α :=
+  match xs with
   | [] => []
-  | x :: xs => if p x then x :: filter p xs else filter p xs
+  | x :: xs' => if p x then x :: filter p xs' else filter p xs'
 
 def filter_length (p : α → Prop) [DecidablePred p] : (filter p xs).length ≤ xs.length := by
   induction xs with
@@ -24,6 +17,14 @@ def filter_length (p : α → Prop) [DecidablePred p] : (filter p xs).length ≤
     split
     . simp; omega
     . omega
+
+/-- `All p xs` states that `p` holds for all entries in the list `xs` -/
+inductive All (p : α → Prop) : List α → Prop where
+  | /-- `p` certainly holds for all zero entries of the empty list -/
+    nil : All p []
+  | /-- If `p` holds for the head and holds for all entries in the tail,
+    then it holds for the combined list -/
+    cons : p x → All p xs → All p (x :: xs)
 
 theorem filter_all (p : α → Prop) [DecidablePred p] : All p (filter p xs) := by
   induction xs with

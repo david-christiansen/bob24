@@ -69,33 +69,6 @@ def Query.matches (q : Query ctxt) (v : ctxt.Subject) : Bool :=
   | .and q1 q2, v => q1.matches v && q2.matches v
   | .or q1 q2, v =>  q1.matches v || q2.matches v
 
-def Query.optimize (q : Query ctxt) : Query ctxt :=
-  match q with
-  | .obj q' => .obj q'.optimize
-  | .key k q' => .key k q'.optimize
-  | .array q' => .array q'.optimize
-  | .at n q' => .at n q'.optimize
-  | .and q1 q2 =>
-    let q1' := q1.optimize
-    let q2' := q2.optimize
-    match q1', q2' with
-    | .any, _ => q2'
-    | .none, _ => .none
-    | _, .any => q1'
-    | _, .none => .none
-    | _, _ => .and q1' q2'
-  | .or q1 q2 =>
-    let q1' := q1.optimize
-    let q2' := q2.optimize
-    match q1', q2' with
-    | .any, _ => .any
-    | .none, _ => q2'
-    | _, .any => .any
-    | _, .none => q1'
-    | _, _ => .or q1' q2'
-  | other => other
-
-
 partial def Query.parse {ctxt: Context} (input : Json) : Except String (Query ctxt) := do
   match ctxt, input with
   | _, "any" => pure .any

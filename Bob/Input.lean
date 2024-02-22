@@ -5,17 +5,6 @@ namespace Bob
 open Lean (Json Parsec)
 open Lean.Parsec
 
-def readJsonList (input : String) : Except String (List Json) := do
-  match jsons input.mkIterator with
-  | .success _ v => pure v
-  | .error _ e => throw e
-where
-  jsons : Parsec (List Json) := do
-    ws
-    let val ← many Json.Parser.anyCore
-    eof
-    pure val.toList
-
 def readJsonArray (input : String) : Except String (Array Json) := do
   match jsons input.mkIterator with
   | .success _ v => pure v

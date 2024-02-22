@@ -58,13 +58,24 @@ def Tree.toList : Tree α → List α
 -- type that classifies evidence of its truth. Dependent types allow
 -- propositions to include ordinary values, and thus be useful!
 
--- This datatype is a proposition that takes a list as an argument. We
--- can only provide something with type `NonemptyList xs` when `xs` is
--- a `::`.
-inductive NonemptyList : List α → Prop where
-  | cons : NonemptyList (x :: xs) -- here x and xs are implicitly arguments
+inductive Even : Nat → Prop where
+  | zero : Even 0
+  | plus2 : Even n → Even (n + 2)
 
-example : NonemptyList [1,2,3] := NonemptyList.cons
+example : Even 6 := Even.plus2 (Even.plus2 (Even.plus2 Even.zero))
+
+example : Even 6 := .plus2 (.plus2 (.plus2 .zero))
+
+open Even in
+example : Even 6 := plus2 (plus2 (plus2 zero))
+
+
+-- TODO - comments
+inductive Repeats (x : α) : List α → Prop where
+  | nil : Repeats x []
+  | cons : Repeats x xs → Repeats x (x :: xs) -- here xs is implicitly an argument
+
+-- TODO example : NonemptyList [1,2,3] := NonemptyList.cons
 
 
 -- Lean types come in two flavors:
