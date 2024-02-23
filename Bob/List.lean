@@ -4,6 +4,7 @@ import Lean
 namespace Bob.List
 
 -- `DecidablePred p` means that we can use `if` to see if `p` holds
+-- Example : if p x then ... else ...
 def filter (p : α → Prop) [DecidablePred p] (xs : List α) : List α :=
   match xs with
   | [] => []
@@ -18,6 +19,11 @@ def filter_length (p : α → Prop) [DecidablePred p] : (filter p xs).length ≤
     . simp; omega
     . omega
 
+/- Reminder:
+inductive Repeats (x : α) : List α → Prop where
+  | nil : Repeats x []
+  | cons : Repeats x xs → Repeats x (x :: xs)
+-/
 /-- `All p xs` states that `p` holds for all entries in the list `xs` -/
 inductive All (p : α → Prop) : List α → Prop where
   | /-- `p` certainly holds for all zero entries of the empty list -/
@@ -26,7 +32,8 @@ inductive All (p : α → Prop) : List α → Prop where
     then it holds for the combined list -/
     cons : p x → All p xs → All p (x :: xs)
 
-theorem filter_all (p : α → Prop) [DecidablePred p] : All p (filter p xs) := by
+theorem filter_all (p : α → Prop) [DecidablePred p]
+    : All p (filter p xs) := by
   induction xs with
   | nil => constructor
   | cons x xs ih =>

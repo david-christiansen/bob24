@@ -11,5 +11,5 @@ lean_lib Bob where
   -- add library configuration options here
 
 @[default_target]
-lean_exe bob where
+lean_exe bobfilter where
   root := `Main

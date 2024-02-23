@@ -13,7 +13,8 @@ stages:
     matching, recursion, datatypes, and other common features of
     functional languages look in Lean's syntax, as well as how to
     interact with Lean
- 2. Two verified implementations of a JSON filter
+ 2. Two verified implementations of a JSON filter, one using linked
+    lists and the other using efficient arrays
  
 The JSON filter is a command-line tool that applies a query to a
 sequence of JSON values read from standard input, writing those that
@@ -26,7 +27,21 @@ We won't have time to explain everything in complete detail, but we
 hope that the overview we provide is a good starting point for
 learning to use Lean. Please see [the documentation
 section](https://lean-lang.org/documentation/) of the Lean website for
-further resources.
+further resources. The [Lean Zulip](https://leanprover.zulipchat.com/)
+is a friendly and helpful place to ask questions for both beginners
+and experts.
+
+## Preparing for the Tutorial
+
+To prepare for the tutorial, please do the following prior to BobKonf:
+
+1. [Install Lean](https://lean-lang.org/lean4/doc/quickstart.html)
+2. Clone this repository
+3. Ensure that you can build the code by running `lake build` from the
+   command line
+4. Ensure that your editor is correctly connected to Lean by opening
+   one of the files, introducing an error, and checking that there is
+   feedback
 
 ## Repository Structure
 
@@ -38,7 +53,7 @@ $ lake build
 ```
 to compile it, or
 ```
-$ lake exe bob
+$ lake exe bobfilter
 ```
 to run the executable.
 
@@ -53,7 +68,7 @@ The repository contains the following branches, each a refinement of the prior o
    stage, though it's using linked lists where an array would be more
    appropriate.
  - `step2`: the implementation used in `step1` is proven correct
- - `step3`: the implementation is replace with one that uses packed
+ - `step3`: the implementation is replaced with one that uses packed
    arrays instead of linked lists
  - `step4`: the array implementation is proven correct
 
