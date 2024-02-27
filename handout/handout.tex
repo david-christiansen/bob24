@@ -1,0 +1,194 @@
+\documentclass[11pt,DIV=16,parskip=half,headings=normal,abstract]{scrartcl}
+
+\usepackage[T3,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[standard]{ntheorem}
+\usepackage{amscd}
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+\usepackage{faktor}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage[safe]{tipa} % for \textlambda
+\usepackage{adjustbox}
+\usepackage[para]{footmisc}
+\usepackage{paralist}
+
+\usepackage[
+	pdfauthor={David Thrane Christiansen, Joachim Breitner},
+	pdftitle={Lean for the Functional Programmer -- handout},
+	pdfsubject={}
+	]{hyperref}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{ragged2e}
+%\usepackage[para]{footmisc}
+\usepackage{fourier}
+\usepackage{microtype}
+\usepackage{comment}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{arrows}
+
+\urlstyle{sf}
+
+% \author{Joachim Breitner\footnote{\href{mailto:breitner@kit.edu}{breitner@kit.edu}, \url{http://www.joachim-breitner.de/}}}
+% \title{Verifikation mit Isabelle}
+% \subtitle{(Handout)}
+% \publishers{BobKonf 2016}
+% \date{19. Februar 2016}
+
+\usepackage{color}
+\definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1}   % red
+\definecolor{tacticcolor}{rgb}{0.0, 0.1, 0.6}    % blue
+\definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4}   % grey
+\definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}    % blue
+\definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}      % green
+\definecolor{attributecolor}{rgb}{0.7, 0.1, 0.1} % red
+
+\def\lstlanguagefiles{lstlean.tex}
+% set default language
+\lstset{language=lean}
+
+
+\definecolor{light-gray}{gray}{0.95}
+\lstdefinestyle{basic}{
+        ,columns=flexible
+        ,basewidth={.365em}
+        ,keepspaces=True
+	,belowskip=0pt
+	,backgroundcolor=\color{light-gray}
+	,frame=single
+        ,basicstyle=\small\sffamily
+        ,commentstyle=\small\sffamily
+        ,stringstyle=\itshape
+	,rangeprefix=---
+	,rangesuffix=---
+	,includerangemarker=false
+}
+\newcommand{\li}{\lstinline}
+
+
+\pagestyle{plain}
+\begin{document}
+
+%\maketitle
+\thispagestyle{empty}
+
+\section*{Lean syntax cheat sheet}
+
+\setlength\columnsep{5mm}
+\begin{multicols*}{2}
+\raggedright
+\raggedcolumns
+
+\textbf{Types}
+
+Basic types: \li{Nat}, \li{Bool}, \li{Unit}.\\
+Function types: \li{a → b} (typed as \li{\to }).\\
+Container types: \li{Option a}, \li{List a}.
+
+\textbf{Definitions}
+
+Simple definitions:
+\begin{lstlisting}
+def answer : Nat := 42
+def double (n : Nat) : Nat := 2 * n
+\end{lstlisting}
+
+Function application by juxtaposition:
+\begin{lstlisting}
+def quadruple (n : Nat) : Nat :=
+  double (double n)
+\end{lstlisting}
+
+Conditionals and pattern matching:
+\begin{lstlisting}
+def isAnswer (n : Nat) : Bool :=
+  if n = 42 then true else false
+
+def isEmpty (xs : List α) : Bool :=
+  match xs with
+  | []     => true
+  | _ :: _ => false
+
+def isEmpty' : List α → Bool
+  | []     => true
+  | _ :: _ => false
+\end{lstlisting}
+
+Recursion:
+\begin{lstlisting}
+def length : List α → Nat
+  | []      => 0
+  | _ :: xs => 1 + length xs
+\end{lstlisting}
+
+\textbf{Inductive data types}
+
+\begin{lstlisting}
+inductive Tree α where
+  | leaf : Tree α
+  | branch : Tree α → α → Tree α → Tree α
+\end{lstlisting}
+
+\textbf{Useful commands}
+\begin{lstlisting}
+#eval double 5
+#check Tree.branch
+\end{lstlisting}
+
+\textbf{Theorems and proofs}
+
+Equality:
+\begin{lstlisting}
+theorem answerIs42 : answer = 42 := by
+  refl
+\end{lstlisting}
+
+\goodbreak
+
+Inductive propositions:
+\begin{lstlisting}
+inductive Rpts (x : α) : List α → Prop where
+  | nil : Rpts x []
+  | cons : Rpts x xs → Rpts x (x :: xs)
+\end{lstlisting}
+
+Proof by induction, unfolding function definitions and application of constructors:
+\begin{lstlisting}
+theorem Rpts_map (x : α) (xs : List α)
+    (f : α → β) (h : Rpts x xs) :
+    Rpts (f x) (xs.map f) := by
+  induction h
+  case nil => exact Rpts.nil
+  case cons xs h IH =>
+    -- IH : Rpts (f x) (List.map f xs)
+    -- ⊢ Rpts (f x) (List.map f (x :: xs))
+    unfold List.map
+    -- ⊢ Rpts (f x) (f x :: List.map f xs)
+    apply Rpts.cons
+    -- ⊢ Rpts (f x) (List.map f xs)
+    assumption -- uses IH
+\end{lstlisting}
+
+
+\textbf{Further reading and help}
+\begin{itemize}
+\item Functional Programming in Lean %\url{https://lean-lang.org/functional_programming_in_lean/}
+\item Loogle: \href{https://loogle.lean-lang.org/}{loogle.lean-lang.org}
+\item Zulip chat: \href{https://leanprover.zulipchat.com/}{leanprover.zulipchat.com}
+\item Mathlib4 on Github %: \href{https://github.com/leanprover-community/mathlib4}
+\end{itemize}
+
+
+
+\end{multicols*}
+
+\end{document}
