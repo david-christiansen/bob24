@@ -1,6 +1,5 @@
 -- This program uses the compiler's JSON library
-import Lean
-import Std
+import Lean.Data.Json
 import Bob.List
 import Bob.Array
 

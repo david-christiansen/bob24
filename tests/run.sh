@@ -4,7 +4,7 @@ cd "$(dirname "$0")" || exit 1
 
 mkdir -p out expected
 
-bob="lake -d=.. exe bob"
+bobfilter="lake -d=.. exe bobfilter"
 
 if [ "$1" = "-a" ]
 then
@@ -27,10 +27,10 @@ do
   echo -n "Running $t... "
   if [ "$accept" = true ]
   then
-    $bob "$(<"$t")" < input.json > "expected/$t"
+    $bobfilter "$(<"$t")" < input.json > "expected/$t"
     echo
   else
-    if $bob "$(<"$t")" < input.json > "out/$t"
+    if $bobfilter "$(<"$t")" < input.json > "out/$t"
     then
       if diff -Nu "expected/$t" "out/$t" > "out/$t.diff"
       then

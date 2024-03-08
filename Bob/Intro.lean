@@ -52,13 +52,16 @@ def Tree.toList : Tree α → List α
 
 #eval (Tree.branch (Tree.branch Tree.leaf 1 Tree.leaf) 2 Tree.leaf).toList
 
--- Lean also has full dependent types, so types can mention values and values in types can compute.
--- Following the "propositions as types" principle, a proposition (logical statement) is represented
--- as a type that classifies evidence of its truth. Dependent types allow propositions to include
--- ordinary values, and thus be useful!
---
--- A predicate is a proposition with a free variable that might hold (or not) for a given value
+/-
 
+Lean also has full dependent types, so types can mention values and values in types can compute.
+Following the "propositions as types" principle, a proposition (logical statement) is represented as
+a type that classifies evidence of its truth. Dependent types allow propositions to include ordinary
+values, and thus be useful!
+
+A predicate is a proposition with a free variable that might hold (or not) for a given value
+
+-/
 inductive Even : Nat → Prop where
   | isEven : (half : Nat) → Even (half + half)
 
@@ -70,20 +73,24 @@ inductive Repeats (x : α) : List α → Prop where
 
 example : Repeats 3 [3,3,3] := .cons (.cons (.cons .nil))
 
--- Lean types come in two flavors:
--- * Types that contain data
--- * Propositions
---
--- The difference is that the rules of Lean are set up such that any two proofs of the same
--- proposition are considered equivalent - we don't get to care which proof we have, so the result
--- of a program had better not depend on it. This frees us from caring as well, so we don't have to
--- worry _why_ two things are equal.
---
--- Functions that return types (including propositions) are just as good as any other function. For
--- instance, this function takes two predicates over some type α and builds a new predicate that
--- asserts both:
+/-
+Lean types come in two flavors:
+ * Types that contain data
+ * Propositions
+
+The difference is that the rules of Lean are set up such that any two proofs of the same proposition
+are considered equivalent - we don't get to care which proof we have, so the result of a program had
+better not depend on it. This frees us from caring as well, so we don't have to worry _why_ two
+things are equal.
+
+Functions that return types (including propositions) are just as good as any other function. For
+instance, this function takes two predicates over some type α and builds a new predicate that
+asserts both:
+-/
 
 def Both (p q : α → Prop) : α → Prop := fun x => p x ∧ q x
 
--- For more details on this, please see _Theorem Proving in Lean 4_
--- and _Functional Programming in Lean_.
+/-
+For more details on this, please see _Theorem Proving in Lean 4_ and _Functional Programming in
+Lean_.
+-/

@@ -1,9 +1,8 @@
-import Std
 import Lean
 
 namespace Bob.List
 
--- `DecidablePred p` means that we can use `if` to see if `p` holds
+-- `DecidablePred p` means that we can use `if` to check whether a value satisfies `p`
 -- Example : if p x then ... else ...
 def filter (p : α → Prop) [DecidablePred p] (xs : List α) : List α :=
   match xs with
@@ -14,10 +13,11 @@ def filter_length (p : α → Prop) [DecidablePred p] : (filter p xs).length ≤
   induction xs with
   | nil => simp [filter]
   | cons x xs ih =>
-    simp [filter]
+    simp only [filter]
     split
-    . simp; omega
-    . omega
+    . simp only [List.length];
+      exact Nat.add_le_add_right ih 1
+    . exact Nat.le_succ_of_le ih
 
 /- Reminder:
 inductive Repeats (x : α) : List α → Prop where

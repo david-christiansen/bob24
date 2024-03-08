@@ -18,5 +18,5 @@ def main : List String → IO UInt32
         IO.println v
       return 0
   | _ => do
-    IO.println "Usage: bob QUERY"
+    IO.println "Usage: bobfilter QUERY"
     return 2
