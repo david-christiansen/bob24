@@ -70,7 +70,7 @@ The repository contains the following branches, each a refinement of the prior o
    doing any verification. The program can pass the tests at this
    stage, though it's using linked lists where an array would be more
    appropriate.
- - [`step2`](https://github.com/david-christiansen/bob24/tree/step2):
+ - **This branch,** [`step2`](https://github.com/david-christiansen/bob24/tree/step2):
    the implementation used in `step1` is proven correct
  - [`step3`](https://github.com/david-christiansen/bob24/tree/step3):
    the implementation is replaced with one that uses packed arrays
