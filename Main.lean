@@ -14,11 +14,9 @@ def main : List String → IO UInt32
     match readJsonArray input with
     | .error e => IO.eprintln e; return 3
     | .ok vals =>
-      IO.eprintln "NOT IMPLEMENTED!"
-      return 4
-      -- for v in Bob.List.filter (query.matches · = true) vals.toList do
-      --   IO.println v
-      -- return 0
+      for v in Bob.List.filter (query.matches · = true) vals.toList do
+        IO.println v
+      return 0
   | _ => do
     IO.println "Usage: bobfilter QUERY"
     return 2

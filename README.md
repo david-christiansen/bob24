@@ -62,13 +62,11 @@ to run the executable.
 The repository contains the following branches, each a refinement of the prior one:
 
  - `main`: the initial state of the example code, in which the program is
-   not yet written and thus just crashes
- - `intro`: the initial introductory Lean development is complete and the
-   program no longer just crashes, but it's buggy and the tests don't pass
+   only a stub and the tests do not pass.
  - `step1`: the code after writing the initial example programs, but
-   before doing any verification. The program can be run at this
-   stage, though it's using linked lists where an array would be more
-   appropriate.
+   before doing any verification. The program can pass the tests at
+   this stage, though it's using linked lists where an array would be
+   more appropriate.
  - `step2`: the implementation used in `step1` is proven correct
  - `step3`: the implementation is replaced with one that uses packed
    arrays instead of linked lists
