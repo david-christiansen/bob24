@@ -65,7 +65,7 @@ The repository contains the following branches, each a refinement of the prior o
  - [`main`](https://github.com/david-christiansen/bob24/tree/main):
    the initial state of the example code, in which the program is only
    a stub and the tests do not pass.
- - [`step1`](https://github.com/david-christiansen/bob24/tree/step1):
+ - **This branch,** [`step1`](https://github.com/david-christiansen/bob24/tree/step1):
    the code after writing the initial example programs, but before
    doing any verification. The program can pass the tests at this
    stage, though it's using linked lists where an array would be more
