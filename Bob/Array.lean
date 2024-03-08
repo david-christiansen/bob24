@@ -32,12 +32,23 @@ where
     else out
   termination_by arr.size - i
 
-def All (p : α → Prop) (arr : Array α) : Prop := sorry
+def All (p : α → Prop) (arr : Array α) : Prop :=
+  (i : Nat) → (lt : i < arr.size) →  p arr[i]
 
 @[simp]
-theorem all_empty (p : α → Prop) : All p #[] := sorry
+theorem all_empty (p : α → Prop) : All p #[] := fun i lt =>
+  by contradiction
 
-theorem push_all (hAll : All p xs) (hx : p x) : All p (xs.push x) := by sorry
+theorem push_all (hAll : All p xs) (hx : p x) : All p (xs.push x) := by
+  intros
+  intro i lt
+  by_cases i = xs.size
+  · simp [*]
+  · simp at lt
+    have : i < xs.size := by omega
+    simp [Array.get_push_lt, *]
+    apply hAll
+
 
 /-
 Prove that the inner loop in `filter` ensures that the predicate holds for its result, on the
@@ -54,7 +65,19 @@ Because the proof should follow the recursive structure of the program, you may 
 copy the termination argument from the program to the proof.
 -/
 theorem filter_go_all [DecidablePred p] (hAcc : All p acc)
-    : All p (filter.go p xs i acc) := by sorry
+    : All p (filter.go p xs i acc) := by
+  unfold filter.go
+  split
+  · split
+    . apply filter_go_all
+      apply push_all
+      . assumption
+      . assumption
+    . apply filter_go_all
+      . assumption
+  · assumption
+termination_by xs.size - i
+
 
 theorem filter_all (p : α → Prop) [DecidablePred p] : All p (filter p xs) := by
-  sorry
+  simp [filter, filter_go_all]
