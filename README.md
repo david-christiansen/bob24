@@ -75,7 +75,7 @@ The repository contains the following branches, each a refinement of the prior o
  - [`step3`](https://github.com/david-christiansen/bob24/tree/step3):
    the implementation is replaced with one that uses packed arrays
    instead of linked lists
- - [`step4`](https://github.com/david-christiansen/bob24/tree/step4):
+ - **This branch,** [`step4`](https://github.com/david-christiansen/bob24/tree/step4):
    the array implementation is proven correct
 
 ### Code Structure
