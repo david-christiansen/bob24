@@ -1,8 +1,9 @@
-# Lean for the General Programmer
+# Lean for the Functional Programmer
 
-This is the accompanying code for "Lean for the General Programmer", a
-tutorial presented at BobKonf on 2024-03-15 in Berlin by Joachim
-Breitner and David Thrane Christiansen.
+This is the accompanying code for "Lean for the Functional
+Programmer", a tutorial presented at
+[BobKonf](https://bobkonf.de/2024/en/) on 2024-03-15 in Berlin by
+Joachim Breitner and David Thrane Christiansen.
 
 ## Overview
 
@@ -61,16 +62,21 @@ to run the executable.
 
 The repository contains the following branches, each a refinement of the prior one:
 
- - `main`: the initial state of the example code, in which the program is
-   only a stub and the tests do not pass.
- - `step1`: the code after writing the initial example programs, but
-   before doing any verification. The program can pass the tests at
-   this stage, though it's using linked lists where an array would be
-   more appropriate.
- - `step2`: the implementation used in `step1` is proven correct
- - `step3`: the implementation is replaced with one that uses packed
-   arrays instead of linked lists
- - `step4`: the array implementation is proven correct
+ - [`main`](https://github.com/david-christiansen/bob24/tree/main):
+   the initial state of the example code, in which the program is only
+   a stub and the tests do not pass.
+ - [`step1`](https://github.com/david-christiansen/bob24/tree/step1):
+   the code after writing the initial example programs, but before
+   doing any verification. The program can pass the tests at this
+   stage, though it's using linked lists where an array would be more
+   appropriate.
+ - [`step2`](https://github.com/david-christiansen/bob24/tree/step2):
+   the implementation used in `step1` is proven correct
+ - [`step3`](https://github.com/david-christiansen/bob24/tree/step3):
+   the implementation is replaced with one that uses packed arrays
+   instead of linked lists
+ - [`step4`](https://github.com/david-christiansen/bob24/tree/step4):
+   the array implementation is proven correct
 
 ### Code Structure
 
@@ -86,5 +92,5 @@ The repository contains the following branches, each a refinement of the prior o
 ## Running the Tests
 
 When the program seems to work, it can be tested using `run.sh` in the
-`tests` directory. Please see [tests/README.md](tests/README.md) for
+[`tests` directory](./tests/). Please see [tests/README.md](tests/README.md) for
 more information.
