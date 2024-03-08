@@ -62,7 +62,7 @@ to run the executable.
 
 The repository contains the following branches, each a refinement of the prior one:
 
- - [`main`](https://github.com/david-christiansen/bob24/tree/main):
+ - **This branch,** [`main`](https://github.com/david-christiansen/bob24/tree/main):
    the initial state of the example code, in which the program is only
    a stub and the tests do not pass.
  - [`step1`](https://github.com/david-christiansen/bob24/tree/step1):
