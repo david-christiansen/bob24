@@ -150,7 +150,7 @@ inductive Tree α where
 Equality:
 \begin{lstlisting}
 theorem answerIs42 : answer = 42 := by
-  refl
+  rfl
 \end{lstlisting}
 
 \goodbreak
@@ -172,13 +172,18 @@ theorem Rpts_map (x : α) (xs : List α)
   case cons xs h IH =>
     -- IH : Rpts (f x) (List.map f xs)
     -- ⊢ Rpts (f x) (List.map f (x :: xs))
-    unfold List.map
+    simp [List.map]
     -- ⊢ Rpts (f x) (f x :: List.map f xs)
     apply Rpts.cons
     -- ⊢ Rpts (f x) (List.map f xs)
     assumption -- uses IH
 \end{lstlisting}
 
+\textbf{Proof automation tactics}
+\begin{itemize}
+\item \li{apply?}: Simple local proof search
+\item \li{omega}: Solve goals about \li{Nat}, \li{Int} and arithmetic
+\end{itemize}
 
 \textbf{Further reading and help}
 \begin{itemize}
