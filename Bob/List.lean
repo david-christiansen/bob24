@@ -2,8 +2,6 @@ import Lean
 
 namespace Bob.List
 
--- `DecidablePred p` means that we can use `if` to check whether a value satisfies `p`
--- Example : if p x then ... else ...
 def filter (p : α → Prop) [DecidablePred p] (xs : List α) : List α :=
   match xs with
   | [] => []
@@ -19,12 +17,6 @@ def filter_length (p : α → Prop) [DecidablePred p] : (filter p xs).length ≤
       exact Nat.add_le_add_right ih 1
     . exact Nat.le_succ_of_le ih
 
-/- Reminder:
-inductive Repeats (x : α) : List α → Prop where
-  | nil : Repeats x []
-  | cons : Repeats x xs → Repeats x (x :: xs)
--/
-/-- `All p xs` states that `p` holds for all entries in the list `xs` -/
 inductive All (p : α → Prop) : List α → Prop where
   | /-- `p` certainly holds for all zero entries of the empty list -/
     nil : All p []
@@ -61,8 +53,6 @@ theorem filter_elem (p : α → Prop) [DecidablePred p] : x ∈ xs → p x → x
     . constructor; apply ih; assumption
     . apply ih; assumption
 
-/-- `Sublist xs ys` means that all entries of `xs` occur, in that
-order, in `ys`, possibly with extra entries -/
 inductive Sublist : List α → List α → Prop where
   | nil : Sublist [] ys
   | skip : Sublist xs ys → Sublist xs (y :: ys)
